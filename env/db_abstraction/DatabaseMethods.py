@@ -2,13 +2,10 @@ import sqlite3
 from sqlite3 import Error
 import json
 from os import path
-import InitDb as initDb
 
 def createConnection(file):
     con = None
     try:
-        if (not path.exists('commerce_items.db')):
-            initDb.createDb()
         con = sqlite3.connect(file)
     except Error as e:
         print(e)
@@ -25,6 +22,11 @@ def insertItem(con, itemName, itemPrice):
     con.commit()
     return lastId
 
+def insertItems(con, itemList):
+    cur = con.cursor()
+    
+    return None
+
 def searchItems(con, itemName, minPrice, maxPrice):
     return None
 
@@ -38,17 +40,15 @@ def getAllItems(con):
         return dbToJsonList(res)
 
 def dbToJsonList(resList):
-    objDictList = dict()
-    objDict = dict()
+    objList = list()
     for res in resList:
-        id = res[0]
-        name = res[1]
-        price = res[2]
-        startDate = res[3]
+        itemName = res[0]
+        price = res[1]
+        startDate = res[2]
         tempDict = {
-            "name" : name, "price" : price, "start_date" : startDate
+            'name' : itemName, 'price' : price, 'start_date' : startDate
         }
-        objDict[id] = tempDict
+        objDict.append(tempDict)
     return objDict
 
 def test():
