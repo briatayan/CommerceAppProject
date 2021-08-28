@@ -1,46 +1,38 @@
 import db_abstraction.DatabaseMethods as dbMethods
+import datetime
 
 def createConnection():
     file = "commerce_items.db"
     con = dbMethods.createConnection(file)
     return con
 
-def closeConnection():
-    dbMethods.closeConnection()
+def closeConnection(con):
+    dbMethods.closeConnection(con)
 
 def postItems(itemList):
     con = createConnection()
-    dbMethods.insertItems(con, itemList)
-    return True
+    validData = dbMethods.insertItems(con, itemList)
+    return validData
 
-def postItem(itemName, price):
+def postItem(itemName, price, date):
     con = createConnection()
-    dbMethods.insertItem(con, itemName, price)
-    closeConnection()
+    dbMethods.insertItem(con, itemName, price, date)
+    closeConnection(con)
     return True
 
-def searchItems(itemName, minPrice, maxPrice):
-    if (minPrice > maxPrice):
-        return 400
-    return None
+# def searchItems(itemName, minPrice, maxPrice):
+#     if (minPrice > maxPrice):
+#         return 400
+#     return None
 
 def getAllItems():
     con = createConnection()
     itemList = dbMethods.getAllItems(con)
-    for item in itemList.values():
-        item['start_date'] = convertDate(item['start_date'])
+    #logger.info("DB List: \n" + str(itemList))
     return itemList
 
-def divideData(data, rows=200):
-    for i in data:
-        yield data[i:i+1]
-
-def checkName(itemName):
-    return None
-
-def convertDate(date):
-    formattedDate = date[5:7] + "/" + date[8:10] + "/" + date[0:4]
-    return formattedDate
+# def checkName(itemName):
+#     return None
 
 def test():
     print(getAllItems())
