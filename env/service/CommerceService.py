@@ -14,27 +14,13 @@ def postItems(itemList):
     validData = dbMethods.insertItems(con, itemList)
     return validData
 
-def postItem(itemName, price, date):
+def searchItems(itemName, minPrice, maxPrice):
     con = createConnection()
-    dbMethods.insertItem(con, itemName, price, date)
+    itemList = dbMethods.searchItems(con, itemName, minPrice, maxPrice)
     closeConnection(con)
-    return True
-
-# def searchItems(itemName, minPrice, maxPrice):
-#     if (minPrice > maxPrice):
-#         return 400
-#     return None
+    return itemList
 
 def getAllItems():
     con = createConnection()
     itemList = dbMethods.getAllItems(con)
-    #logger.info("DB List: \n" + str(itemList))
     return itemList
-
-# def checkName(itemName):
-#     return None
-
-def test():
-    print(getAllItems())
-
-#test()
