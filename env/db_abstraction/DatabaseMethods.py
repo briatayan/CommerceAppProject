@@ -11,7 +11,6 @@ def createConnection(file):
         con = sqlite3.connect(file)
     except Error as e:
         print(e)
-
     return con
 
 def closeConnection(con):
@@ -29,7 +28,7 @@ def insertItems(con, itemList):
             for item in chunk:
                 name, price, date = item['name'], item['price'], item['start_date']
                 if datetime.datetime.strptime(date, "%m/%d/%Y") < datetime.datetime.now():
-                    validData.append("Date is before current date: " + date)
+                    validData.append("Ignoring item. Date is before current date: " + date)
                 elif len(name) < 4 or len(name) > 10:
                     validData.append("Ignoring item. Name is either less than 4 characters or more than 10. Size: " + str(len(name)))
                 elif name[0].isalpha() == False and name[0].isnumeric() == False:
@@ -52,18 +51,20 @@ def searchItems(con, keyword, minPrice, maxPrice):
     res = list()
     cur = con.cursor()
     if minPrice > maxPrice and maxPrice > 0:
-        return res.append("Minimum price is greater than maximum price")
+        res.append("Minimum price is greater than maximum price")
+        return res
     if minPrice != 0 and not None:
         query = query + "price >= " + str(minPrice) + " AND "
     if maxPrice != 0 and not None:
         query = query + "price <= " + str(maxPrice) + " AND "
     query = query + "LOWER(name) LIKE '%" + keyword.lower() + "%'"
-    cur.execute(query)
-    res = cur.fetchall()
-    if res is None:
-        print("res is null", file=sys.stderr)
-        return res
-    return dbToJsonList(res)
+    try:
+        cur.execute(query)
+        res = cur.fetchall()
+        return dbToJsonList(res)
+    except Error as e:
+        print(e, file=sys.stderr)
+        return None
 
 def getAllItems(con):
     query = "SELECT name, price, start_date FROM items"
