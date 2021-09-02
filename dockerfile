@@ -1,13 +1,17 @@
 FROM python:3.9
-ENV VIRTUAL_ENV=env
-RUN python -m venv $VIRTUAL_ENV
+
+WORKDIR /env
+
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
+ENV FLASK_APP env/CommerceApp.py
+
 COPY requirements.txt /env
-WORKDIR /env
 
 RUN pip install -r requirements.txt
 
-COPY env/CommerceApp.py .
+COPY . .
 
-CMD ["python", "CommerceApp.py"]
+CMD ["python", "dbCLI.py", "create"]
+
+ENTRYPOINT python env/CommerceApp.py

@@ -29,7 +29,7 @@ def restartDb():
     try:
         con = sqlite3.connect('commerce_items.db')
         cur = con.cursor()
-        cur.execute("DROP TABLE items")
+        cur.execute("DROP TABLE IF EXISTS items")
         cur.execute("CREATE TABLE IF NOT EXISTS items (name VARCHAR(10) PRIMARY KEY, \
             price INTEGER NOT NULL, start_date TIMESTAMP DEFAULT CURRENT_DATE)")
         con.commit()

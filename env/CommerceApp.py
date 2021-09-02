@@ -1,6 +1,7 @@
 from flask import Flask, request, json
 import service.CommerceService as service
 import sys
+import DbOperations as dbOps
 
 app = Flask(__name__)
 
@@ -39,3 +40,7 @@ def getAllItems():
         return json.jsonify(itemList)
     else:
         return json.dumps({'success':False, 'description':'Post list is empty.'}), 200, {'ContentType':'application/json'}
+
+if __name__ == '__main__':
+    dbOps.restartDb()
+    app.run(host='0.0.0.0', port=80)
