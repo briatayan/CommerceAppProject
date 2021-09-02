@@ -11,13 +11,13 @@ def hello():
 @app.route("/post", methods=['POST'])
 def postItems():
     jsonList = request.get_json()
-    if jsonList is None:
+    if list(jsonList) is None or len(jsonList) == 0:
         return json.dumps({'success':False, 'description':'Given list is null or empty.'}), 400, {'ContentType':'application/json'}
     jsonList = list(jsonList['posts'])
     validData = service.postItems(jsonList)
-    if validData is None:
+    if validData is None or len(validData) == 0:
         return json.dumps({'success':False, 'description':'Return object is null.'}), 500, {'ContentType':'application/json'}
-    return json.jsonify(dict({'data' : validData})), 201
+    return json.jsonify(dict({'valid_data' : validData})), 201
 
 @app.route("/search", methods=['GET'])
 def searchItems():

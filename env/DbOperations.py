@@ -1,7 +1,6 @@
 import sqlite3
 import os.path
 from os import path
-import argparse
 
 def createDb():
     try:
@@ -11,7 +10,7 @@ def createDb():
             price INTEGER NOT NULL, start_date TIMESTAMP DEFAULT CURRENT_DATE)")
         con.commit()
         con.close()
-        print("~~ Created successfully ~~")
+        print("~~ Created DB successfully ~~")
     except Error as e:
         print("Could not execute create: " + e)
 
@@ -22,7 +21,7 @@ def deleteDb():
         cur.execute("DROP TABLE items")
         con.commit()
         con.close()
-        print("~~ Deleted successfully ~~")
+        print("~~ Deleted DB successfully ~~")
     except Error as e:
         print("Could not execute delete: " + e)
 
@@ -35,17 +34,6 @@ def restartDb():
             price INTEGER NOT NULL, start_date TIMESTAMP DEFAULT CURRENT_DATE)")
         con.commit()
         con.close()
-        print("~~ Restarted successfully ~~")
+        print("~~ Restarted DB successfully ~~")
     except Error as e:
         print("Could not execute restart: " + e)
-
-parser = argparse.ArgumentParser(description="Database Methods")
-parser.add_argument("op", choices=["create", "delete", "restart"])
-args = parser.parse_args()
-
-if args.op == "create":
-    createDb()
-elif args.op == "delete":
-    deleteDb()
-elif args.op == "restart":
-    restartDb()
