@@ -38,5 +38,6 @@ A CLI is also included to easily create, delete, and restart the application's s
 ## Unit Test ##
 A unit test that ensures that the application is properly handling requests is included in the project under ```test.py```. The application must be running locally and not through a Docker container in order to properly run the test.
 1. Open /env directory in your command line and run ```source Scripts/activate``` in order to activate the virtual environment.
-2. Run ```export FLASK_APP=CommerceApp```
-3. Run ```python test.py``` to run the unit test.
+2. Run ```export FLASK_APP=CommerceApp```.
+3. Run ```python -m flask run``` to start the server locally.
+4. Run ```python test.py``` to run the unit test.
